@@ -12,7 +12,7 @@ class SongService {
   async addSong({
     title, year, genre, performer, duration, albumId,
   }) {
-    const id = nanoid(16);
+    const id = `song-${nanoid(16)}`;
 
     const stmt = {
       text: 'INSERT INTO songs VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id',
@@ -28,15 +28,15 @@ class SongService {
     return result.rows[0].id;
   }
 
-  async getSongs({ title, performer }) {
-    if (title === undefined) {
-      // eslint-disable-next-line no-param-reassign
-      title = '';
-    }
-    if (performer === undefined) {
-      // eslint-disable-next-line no-param-reassign
-      performer = '';
-    }
+  async getSongs({ title = '', performer = '' }) {
+    // if (title === undefined) {
+    //   // eslint-disable-next-line no-param-reassign
+    //   title = '';
+    // }
+    // if (performer === undefined) {
+    //   // eslint-disable-next-line no-param-reassign
+    //   performer = '';
+    // }
 
     const stmt = {
       text: 'SELECT id, title, performer FROM songs WHERE LOWER(title) LIKE $1 AND LOWER(performer) LIKE $2',
