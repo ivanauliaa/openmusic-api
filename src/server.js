@@ -11,6 +11,7 @@ const playlists = require('./api/playlists');
 const playlistSongs = require('./api/playlistSongs');
 const playlistSongActivities = require('./api/playlistSongActivities');
 const collaborations = require('./api/collaborations');
+const userAlbumLikes = require('./api/userAlbumLikes');
 
 const AlbumService = require('./services/postgres/AlbumService');
 const SongService = require('./services/postgres/SongService');
@@ -20,6 +21,7 @@ const PlaylistService = require('./services/postgres/PlaylistService');
 const PlaylistSongService = require('./services/postgres/PlaylistSongService');
 const PlaylistSongActivityService = require('./services/postgres/PlaylistSongActivityService');
 const CollaborationService = require('./services/postgres/CollaborationService');
+const UserAlbumLikesService = require('./services/postgres/UserAlbumLikesService');
 
 const AlbumsValidator = require('./validator/albums');
 const SongsValidator = require('./validator/songs');
@@ -71,6 +73,7 @@ const init = async () => {
   const playlistService = new PlaylistService(collaborationService);
   const playlistSongService = new PlaylistSongService();
   const playlistSongActivityService = new PlaylistSongActivityService();
+  const userAlbumLikesService = new UserAlbumLikesService();
 
   await server.register([
     {
@@ -134,6 +137,13 @@ const init = async () => {
         playlistService,
         userService,
         validator: CollaborationsValidator,
+      },
+    },
+    {
+      plugin: userAlbumLikes,
+      options: {
+        userAlbumLikesService,
+        albumsService: albumService,
       },
     },
   ]);
