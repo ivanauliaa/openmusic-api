@@ -11,7 +11,7 @@ const playlists = require('./api/playlists');
 const playlistSongs = require('./api/playlistSongs');
 const playlistSongActivities = require('./api/playlistSongActivities');
 const collaborations = require('./api/collaborations');
-
+const ClientError = require('./exceptions/ClientError');
 const AlbumService = require('./services/postgres/AlbumService');
 const SongService = require('./services/postgres/SongService');
 const UserService = require('./services/postgres/UserService');
@@ -137,6 +137,22 @@ const init = async () => {
       },
     },
   ]);
+
+  server.ext('onPreResponse', (request, h) => {
+    const { response } = request;
+
+    if (response instanceof ClientError) {
+      const newResponse = h.response({
+        status: 'fail',
+        message: response.message,
+      });
+      newResponse.code(response.statusCode);
+
+      return newResponse;
+    }
+
+    return response.continue || response;
+  });
 
   await server.start();
   console.log(`Server running on ${server.info.uri}`);
