@@ -52,7 +52,7 @@ class PlaylistService {
 
     const result = await this._pool.query(stmt);
 
-    if (!result.rows.length) {
+    if (!result.rowCount) {
       throw new NotFoundError('Gagal menghapus playlist. Id tidak ditemukan');
     }
   }
@@ -65,7 +65,7 @@ class PlaylistService {
 
     const result = await this._pool.query(stmt);
 
-    if (!result.rows.length) {
+    if (!result.rowCount) {
       throw new NotFoundError('Playlist tidak ditemukan');
     }
 
