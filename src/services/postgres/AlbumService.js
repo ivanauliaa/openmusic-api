@@ -33,7 +33,7 @@ class AlbumService {
 
     const result = await this._pool.query(stmt);
 
-    if (!result.rows.length) {
+    if (!result.rowCount) {
       throw new NotFoundError('Album tidak ditemukan');
     }
 
@@ -60,7 +60,7 @@ class AlbumService {
 
     const result = await this._pool.query(stmt);
 
-    if (!result.rows.length) {
+    if (!result.rowCount) {
       throw new NotFoundError('Album tidak ditemukan');
     }
   }
@@ -73,7 +73,7 @@ class AlbumService {
 
     const result = await this._pool.query(stmt);
 
-    if (!result.rows.length) {
+    if (!result.rowCount) {
       throw new NotFoundError('Album tidak ditemukan');
     }
   }
